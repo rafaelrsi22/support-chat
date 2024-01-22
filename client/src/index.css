@@ -5,3 +5,11 @@
 * {
   margin: 0;
 }
+
+body {
+  height: 100vh;
+}
+
+#root, #app {
+  height: 100%;
+}
