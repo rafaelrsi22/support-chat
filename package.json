@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.2",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0"
   },
   "name": "support-chat",
@@ -13,7 +15,7 @@
   },
   "scripts": {
     "client": "npm run start --prefix client",
-    "server": "nodemon .",
+    "server": "nodemon src/app.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
