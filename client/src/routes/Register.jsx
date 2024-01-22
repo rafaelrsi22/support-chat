@@ -7,7 +7,15 @@ function Register() {
     return (
         <div id="app" className="flex flex-col">
             <Header />
-            <RegisterForm />
+            <RegisterForm onSubmit={(value) => {
+                fetch('/auth/register', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(value)
+                })
+            }} />
         </div>
     );
 }

@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 require('dotenv').config();
 
@@ -12,6 +13,7 @@ const {PORT, RUN_MODE, DB_CONNECTION_STRING} = process.env;
 
 //Middlewares
 app.use(express.static(path.join(__dirname, 'client', 'public')));
+app.use(cookieParser());
 app.use(express.json());
 
 // Routes
