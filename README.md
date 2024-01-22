@@ -9,7 +9,7 @@ The system is a chat that holds a interface that you can talk with authenticated
 
 ### Front-End
 
-For the client side of the application, I am using React.js, and for the UI I got interessed into tailwindcss.
+For the client side of the application, I am using React.js, and for the UI I got interessed into tailwindcss and flowbite for only for the components.
 
 ### Back-end
 
