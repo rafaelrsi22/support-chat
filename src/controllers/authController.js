@@ -58,3 +58,24 @@ module.exports.loginUser = async function(req, res) {
     res.cookie(COOKIE_NAME, userToken);
     res.status(200).send({msg: 'User successfully logged in!'});
 }
+
+module.exports.logoutUser = async function(req, res) {
+    const token = req.cookies[COOKIE_NAME];
+
+    if (!token) { // User is not logged in
+        return;
+    }
+
+    res.clearCookie(COOKIE_NAME);
+    res.status(200).send({msg: 'User successfully logged out!'});
+}
+
+module.exports.getUser = async function(req, res) {
+    const token = req.cookies[COOKIE_NAME];
+
+    if (!token) { // User is not logged in
+        return;
+    }
+
+    console.log(token);
+}
