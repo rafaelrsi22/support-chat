@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom"
 
 function Header() {
     return (
         <header>
-            <h1 className="text-6xl font-semibold tracking-wide text-slate-800 text-center mt-10">Support Chat</h1>
+            <a className="text-6xl font-semibold tracking-wide text-slate-800 text-center mt-10 block">
+                <Link to='/'>Support Chat</Link>
+            </a>
         </header>
     );
 }

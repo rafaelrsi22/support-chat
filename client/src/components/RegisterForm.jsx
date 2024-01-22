@@ -15,7 +15,7 @@ function RegisterForm(props) {
             <Input dataType={'username'} onChange={setUsername} />
             <Input dataType={'email'} onChange={setEmail} />
             <Input dataType={'password'} onChange={setPassword} />
-            <input type="submit" class="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 cursor-pointer" value='Subscribe' />
+            <input type="submit" className="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 cursor-pointer" value='Subscribe' />
         </form>
     );
 }
