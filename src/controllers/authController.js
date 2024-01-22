@@ -32,10 +32,10 @@ module.exports.registerUser = async function(req, res) {
         const userToken = createUserToken(newUser._id);
 
         res.cookie(COOKIE_NAME, userToken);
-        res.status(200).send({msg: 'User successfully created!'});
+        return res.status(200).json({msg: 'User successfully created!'});
     } catch(error) {
         console.log(error);
-        return res.status(500).send('Oh no! Internal Error has ocurred, please try again later.');
+        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
     }
 }
 
@@ -56,7 +56,7 @@ module.exports.loginUser = async function(req, res) {
     const userToken = createUserToken(foundUser._id);
 
     res.cookie(COOKIE_NAME, userToken);
-    res.status(200).send({msg: 'User successfully logged in!'});
+    return res.status(200).json({msg: 'User successfully logged in!'});
 }
 
 module.exports.logoutUser = async function(req, res) {
@@ -67,7 +67,7 @@ module.exports.logoutUser = async function(req, res) {
     }
 
     res.clearCookie(COOKIE_NAME);
-    res.status(200).send({msg: 'User successfully logged out!'});
+    return res.status(200).json({msg: 'User successfully logged out!'});
 }
 
 module.exports.getUser = async function(req, res) {
@@ -77,5 +77,14 @@ module.exports.getUser = async function(req, res) {
         return;
     }
 
-    console.log(token);
+    try {
+        const verifiedToken = jwt.verify(token, JWT_KEY);
+        const user = await User.findById(verifiedToken.id);
+        
+        return res.json({data: {
+            username: user.username
+        }});
+    } catch(error) {
+        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
+    }
 }
