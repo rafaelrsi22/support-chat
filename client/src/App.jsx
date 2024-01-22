@@ -1,16 +1,16 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Header from "./components/Header";
-import LoginForm from "./components/LoginForm";
-import RegisterForm from "./components/RegisterForm";
+import Home from "./routes/Home";
 
 function App() {
     return (
-        <div id="app" className="flex flex-col">
-            <Header />
-            
-        </div>
-    )
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
