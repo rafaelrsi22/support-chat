@@ -1,13 +1,16 @@
 import React from "react";
-import  { useNavigate } from 'react-router-dom'
+import  { useNavigate, Navigate } from 'react-router-dom'
+import { useCookies } from "react-cookie";
 import RegisterForm from "../components/RegisterForm";
 
 import Header from "../components/Header";
 
 function Register() {
+    const [cookies] = useCookies(['authorization-key']);
     const navigate = useNavigate();
 
     return (
+        (!cookies["authorization-key"]) ?
         <div id="app" className="flex flex-col">
             <Header />
             <RegisterForm onSubmit={async (value) => {
@@ -26,6 +29,8 @@ function Register() {
                 }
             }} />
         </div>
+        :
+        <Navigate to='/chat' />
     );
 }
 

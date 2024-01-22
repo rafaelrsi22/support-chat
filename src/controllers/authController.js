@@ -60,31 +60,39 @@ module.exports.loginUser = async function(req, res) {
 }
 
 module.exports.logoutUser = async function(req, res) {
-    const token = req.cookies[COOKIE_NAME];
-
-    if (!token) { // User is not logged in
-        return;
-    }
+    const token = req.token;
 
     res.clearCookie(COOKIE_NAME);
     return res.status(200).json({msg: 'User successfully logged out!'});
 }
 
 module.exports.getUser = async function(req, res) {
+    const user = req.user;
+
+    try {
+        return res.json({data: {
+            username: user.username
+        }});
+    } catch(error) {
+        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
+    }
+}
+
+module.exports.privateRoute = async function(req, res, next) {
     const token = req.cookies[COOKIE_NAME];
 
-    if (!token) { // User is not logged in
-        return;
+    if (!token) { // User doesn't have a cookie
+        return res.status(401).json({msg: "Not authorized", type: 'error'});
     }
 
     try {
         const verifiedToken = jwt.verify(token, JWT_KEY);
         const user = await User.findById(verifiedToken.id);
-        
-        return res.json({data: {
-            username: user.username
-        }});
-    } catch(error) {
+
+        req.token = token;
+        req.user = user;
+        return next();
+    } catch (error) {
         return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
     }
 }
