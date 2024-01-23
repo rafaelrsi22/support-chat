@@ -43,7 +43,7 @@ export default function Input(props) {
             </div>
             <small className={"text-red-500 font-semibold text-xs font-medium leading-6 text-gray-900 uppercase " + (warnVisible ? 'block' : 'hidden')}>
                 Invalid input!
-                </small>
+            </small>
         </div>
     )
   }

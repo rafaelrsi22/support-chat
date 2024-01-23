@@ -6,7 +6,7 @@
     dispatch(actions.createAlert('title', 'description'));
 */
 
-import React, { useContext } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 import Alert from "../components/Alert";

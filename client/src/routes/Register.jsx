@@ -1,12 +1,16 @@
 import React from "react";
 import  { useNavigate, Navigate } from 'react-router-dom'
 import { useCookies } from "react-cookie";
-import RegisterForm from "../components/RegisterForm";
+import { useDispatch } from "react-redux";
 
+import RegisterForm from "../components/RegisterForm";
 import Header from "../components/Header";
+
+import { alertActions } from "../reducers/AlertReducer";
 
 function Register() {
     const [cookies] = useCookies(['authorization-key']);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     return (
@@ -14,7 +18,6 @@ function Register() {
         <div id="app" className="flex flex-col">
             <Header />
             <RegisterForm onSubmit={async (value) => {
-                console.log('a')
                 const response = await fetch('/auth/register', {
                     method: "POST",
                     headers: {
@@ -23,9 +26,15 @@ function Register() {
                     body: JSON.stringify(value)
                 });
 
-                const data = await response.json();
+                const json = await response.json();
 
-                if (data) {
+                if (json) {
+                    const data = json.data;
+
+                    if (data && json.type === 'error') {
+                        dispatch(alertActions.createAlert(data.title, data.description));
+                        return;
+                    }
                     navigate('/chat');
                 }
             }} />

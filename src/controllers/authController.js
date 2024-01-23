@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const warnController = require('./warnController');
+
 const {JWT_KEY} = process.env;
 const COOKIE_NAME = 'authorization-key'
 
@@ -22,7 +24,7 @@ module.exports.registerUser = async function(req, res) {
     const foundUser = await User.find({email});
 
     if (foundUser.length !== 0) { // Already created
-        return;
+        return res.status(400).json(warnController.getClientWarnJSON('Invalid email', 'Please checkup your email address and try again later.'));
     }
 
     try {
@@ -35,7 +37,7 @@ module.exports.registerUser = async function(req, res) {
         return res.status(200).json({msg: 'User successfully created!'});
     } catch(error) {
         console.log(error);
-        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
+        return res.status(500).json(warnController.getClientWarnJSON('Internal Error', 'Oh no! Internal Error has ocurred, please try again later.'));
     }
 }
 
@@ -44,13 +46,13 @@ module.exports.loginUser = async function(req, res) {
     const foundUser = (await User.find({email}))[0];
 
     if (!foundUser) { // Incorrect email
-        return;
+        return res.status(400).json(warnController.getClientWarnJSON('Incorrect Data', 'Wrong email or password, plase verify your data and try again'));
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, foundUser.password);
 
     if (!isPasswordCorrect) { // Incorrect password
-        return;
+        return res.status(400).json(warnController.getClientWarnJSON('Incorrect Data', 'Wrong email or password, plase verify your data and try again'));
     }
 
     const userToken = createUserToken(foundUser._id);
@@ -74,7 +76,7 @@ module.exports.getUser = async function(req, res) {
             username: user.username
         }});
     } catch(error) {
-        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
+        return res.status(500).json(warnController.getClientWarnJSON('Internal Error', 'Oh no! Internal Error has ocurred, please try again later.'));
     }
 }
 
@@ -93,6 +95,6 @@ module.exports.privateRoute = async function(req, res, next) {
         req.user = user;
         return next();
     } catch (error) {
-        return res.status(500).json({msg: "Oh no! Internal Error has ocurred, please try again later."});
+        return res.status(500).json(warnController.getClientWarnJSON('Internal Error', 'Oh no! Internal Error has ocurred, please try again later.'));
     }
 }

@@ -1,12 +1,16 @@
 import React from "react";
 import  { useNavigate, Navigate } from 'react-router-dom'
 import { useCookies } from "react-cookie";
+import { useDispatch } from "react-redux";
 
 import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
 
+import { alertActions } from "../reducers/AlertReducer";
+
 function Login() {
     const [cookies] = useCookies(['authorization-key']);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     return (
@@ -22,9 +26,15 @@ function Login() {
                     body: JSON.stringify(value)
                 });
 
-                const data = await response.json();
+                const json = await response.json();
 
-                if (data) {
+                if (json) {
+                    const data = json.data;
+
+                    if (data && json.type === 'error') {
+                        dispatch(alertActions.createAlert(data.title, data.description));
+                        return;
+                    }
                     navigate('/chat');
                 }
             }} />
