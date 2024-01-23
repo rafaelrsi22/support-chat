@@ -2,12 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom"
 
 import Header from "../components/Header";
-import AlertManager from "../managers/AlertManager";
 
 function Home() {
      return (
         <div id="app" className="flex flex-col">
-            <AlertManager />
             <Header />
             <div className="flex flex-col mx-auto items-center max-w-32 mt-72">
                 <Link to="signup">

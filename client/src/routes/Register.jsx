@@ -14,6 +14,7 @@ function Register() {
         <div id="app" className="flex flex-col">
             <Header />
             <RegisterForm onSubmit={async (value) => {
+                console.log('a')
                 const response = await fetch('/auth/register', {
                     method: "POST",
                     headers: {

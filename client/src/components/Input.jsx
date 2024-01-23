@@ -1,6 +1,10 @@
 import DataInfo from "../lib/FormDataType";
+import { useDispatch, useSelector } from "react-redux";
+
+import { alertActions } from "../reducers/AlertReducer";
 
 export default function Input(props) {
+    const dispatch = useDispatch();
     const {dataType} = props;
     const inputInfo = DataInfo[dataType];
 
@@ -23,6 +27,10 @@ export default function Input(props) {
                 className="block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder={inputInfo.placeholder}
                 onChange={(e) => props.onChange(e.target.value)}
+                onInvalid={(e) => {
+                    e.preventDefault();
+                    dispatch(alertActions.createAlert('Invalid ' + inputInfo.name, 'Please, verify input data and try again!'));
+                }}
                 required
                 />
             </div>

@@ -3,7 +3,7 @@
 
     Require the Actions from AlertReducer, and then you just use them on a dispatch hook.
 
-    dispatch(actions.createAlert('TESTEE', 'TESTANDO'));
+    dispatch(actions.createAlert('title', 'description'));
 */
 
 import React, { useContext } from "react";
@@ -13,10 +13,10 @@ import Alert from "../components/Alert";
 
 function AlertManager() {
     const alerts = useSelector((state) => state);
-    console.log(alerts);
+
     return (
-        <div id="alerts-container" class="absolute top-5">
-            
+        <div id="alerts-container" class="absolute top-5 left-0 right-0 max-w-2xl z-10 m-auto">
+            {alerts.map(({title, description}) => <Alert title={title} description={description} />)}
         </div>
     );
 }
