@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 
 import Home from "./routes/Home";
 import Login from './routes/Login';
@@ -8,18 +10,26 @@ import Chat from './routes/Chat';
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AccessDenied from "./routes/AccessDenied";
 
+import AlertReducer from "./reducers/AlertReducer";
+
 function App() {
+    const store = configureStore({
+        reducer: AlertReducer
+    })
+
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Register />} />
-                <Route path="/chat" element={
-                    <ProtectedRoute element={<Chat />} unauthorized={<AccessDenied />} />
-                } />
-            </Routes>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Register />} />
+                    <Route path="/chat" element={
+                        <ProtectedRoute element={<Chat />} unauthorized={<AccessDenied />} />
+                    } />
+                </Routes>
+            </BrowserRouter>
+        </Provider>
     );
 }
 
