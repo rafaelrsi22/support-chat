@@ -5,9 +5,10 @@ import { alertActions } from "../reducers/AlertReducer";
 
 function Alert(props) {
     const dispatch = useDispatch();
+    const {id} = props;
 
     useEffect(() => {
-        setTimeout(() => dispatch(alertActions.popAlert), 10000);
+        setTimeout(() => dispatch(alertActions.deleteAlert(id)), 10000);
     }, []);
 
     return (
@@ -29,7 +30,7 @@ function Alert(props) {
                 </svg>
                     View more
                 </button>
-                <button type="button" class="text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close" onClick={() => dispatch(alertActions.popAlert)}>
+                <button type="button" class="text-red-800 bg-transparent border border-red-800 hover:bg-red-900 hover:text-white focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5 text-center dark:hover:bg-red-600 dark:border-red-600 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800" data-dismiss-target="#alert-additional-content-2" aria-label="Close" onClick={() => dispatch(alertActions.deleteAlert(id))}>
                     Dismiss
                 </button>
             </div>

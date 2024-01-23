@@ -1,11 +1,15 @@
+import React, { useState } from "react";
 import DataInfo from "../lib/FormDataType";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 
-import { alertActions } from "../reducers/AlertReducer";
+// import { alertActions } from "../reducers/AlertReducer";
 
 export default function Input(props) {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const [warnVisible, setWarnVisibility] = useState(false);
+
     const {dataType} = props;
+    const inputId = dataType + '-form';
     const inputInfo = DataInfo[dataType];
 
     if (!inputInfo) {
@@ -14,7 +18,7 @@ export default function Input(props) {
 
     return (
         <div className="mt-5">
-            <label htmlFor="email-form" className="block text-sm font-medium leading-6 text-gray-900 uppercase">
+            <label htmlFor={inputId} className="block text-base font-medium leading-6 text-gray-900 uppercase">
                 {inputInfo.label}
             </label>
             <div className="relative mt-1 rounded-md shadow-sm">
@@ -23,17 +27,23 @@ export default function Input(props) {
                 <input
                 type={inputInfo.input}
                 name={inputInfo.name}
-                id={dataType + '-form'}
+                id={inputId}
                 className="block w-full rounded-md border-0 py-1.5 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 placeholder={inputInfo.placeholder}
-                onChange={(e) => props.onChange(e.target.value)}
+                onChange={(e) => {
+                    setWarnVisibility(false);
+                    props.onChange(e.target.value)
+                }}
                 onInvalid={(e) => {
                     e.preventDefault();
-                    dispatch(alertActions.createAlert('Invalid ' + inputInfo.name, 'Please, verify input data and try again!'));
+                    setWarnVisibility(true);
                 }}
                 required
                 />
             </div>
+            <small className={"text-red-500 font-semibold text-xs font-medium leading-6 text-gray-900 uppercase " + (warnVisible ? 'block' : 'hidden')}>
+                Invalid input!
+                </small>
         </div>
     )
   }

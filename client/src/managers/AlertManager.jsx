@@ -15,8 +15,10 @@ function AlertManager() {
     const alerts = useSelector((state) => state);
 
     return (
-        <div id="alerts-container" class="absolute top-5 left-0 right-0 max-w-2xl z-10 m-auto">
-            {alerts.map(({title, description}) => <Alert title={title} description={description} />)}
+        <div id="alerts-container" className="absolute top-5 left-0 right-0 max-w-2xl z-10 m-auto">
+            {alerts.map(({title, description, id}) => {
+                return <Alert title={title} description={description} id={id} />
+            })}
         </div>
     );
 }
