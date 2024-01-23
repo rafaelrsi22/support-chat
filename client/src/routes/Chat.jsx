@@ -31,7 +31,13 @@ function Chat() {
                 }} />
             </div>
             <ChatBox onMessage={(msg) => {
-                console.log(msg);
+                fetch('/chat', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({message: msg})
+                });
             }} />
         </div>
     )
