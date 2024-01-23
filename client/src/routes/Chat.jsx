@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import  { useNavigate } from 'react-router-dom'
 
 import Header from "../components/Header";
+import ChatBox from "../components/ChatBox";
 
 function Chat() {
     const [username, setUsername] = useState('');
@@ -29,6 +30,7 @@ function Chat() {
                     }
                 }} />
             </div>
+            <ChatBox />
         </div>
     )
 }

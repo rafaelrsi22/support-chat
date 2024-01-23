@@ -8,7 +8,7 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import Chat from './routes/Chat';
 import ProtectedRoute from "./routes/ProtectedRoute";
-import AccessDenied from "./routes/AccessDenied";
+import NotFound from "./routes/NotFound";
 
 import AlertReducer from "./reducers/AlertReducer";
 
@@ -27,6 +27,7 @@ function App() {
                     <Route path="/chat" element={
                         <ProtectedRoute element={<Chat />} unauthorized={<Home />} />
                     } />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
         </Provider>
