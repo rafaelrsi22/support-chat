@@ -3,7 +3,7 @@
 
     Require the Actions from AlertReducer, and then you just use them on a dispatch hook.
 
-    dispatch(actions.createAlert('title', 'description'));
+    dispatch(alertActions.createAlert('title', 'description'));
 */
 
 import React from "react";

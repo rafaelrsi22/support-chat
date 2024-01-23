@@ -25,7 +25,6 @@ module.exports.registerUser = async function(req, res) {
     const foundUser = await User.find({email});
 
     if (foundUser.length !== 0) { // Already created
-        // return res.status(400).json(warnController.getClientWarnJSON('Invalid email', 'Please checkup your email address and try again later.'));
         return warnController.warnResponse(res, 400, {
             title: 'Invalid email',
             description: 'Please checkup your email address and try again later.'
@@ -33,7 +32,6 @@ module.exports.registerUser = async function(req, res) {
     }
 
     if (userSchema.validate(req.body).error) {
-        // return res.status(500).json(warnController.getClientWarnJSON('Invalid data', 'Please checkup your data and try again later.'));
         return warnController.warnResponse(res, 500, {
             title: 'Invalid data',
             description: 'Please checkup your data and try again later.'
@@ -50,7 +48,6 @@ module.exports.registerUser = async function(req, res) {
         return res.status(200).json({msg: 'User successfully created!'});
     } catch(error) {
         console.log(error);
-        // return res.status(500).json(warnController.getClientWarnJSON('Internal Error', 'Oh no! Internal Error has ocurred, please try again later.'));
         warnController.responseInternalError(res);
     }
 }

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import DataInfo from "../lib/FormDataType";
-// import { useDispatch, useSelector } from "react-redux";
-
-// import { alertActions } from "../reducers/AlertReducer";
 
 export default function Input(props) {
-    // const dispatch = useDispatch();
     const [warnVisible, setWarnVisibility] = useState(false);
 
     const {dataType} = props;
