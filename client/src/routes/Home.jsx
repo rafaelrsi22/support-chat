@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 
 import Header from "../components/Header";
+import Alert from '../components/Alert';
 
 function Home() {
     return (
@@ -11,6 +12,7 @@ function Home() {
                 {/* <a type="submit" className="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-3.5 text-center mt-4 cursor-pointer">
                     <Link to="signup">Get Started</Link>
                 </a> */}
+                <Alert title="Testing alert" description="Here must be all the error info" />
                 <Link to="signup">
                     <a type="submit" className="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-3.5 text-center mt-4 cursor-pointer">
                         Get Started
