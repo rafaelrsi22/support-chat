@@ -30,7 +30,9 @@ function Chat() {
                     }
                 }} />
             </div>
-            <ChatBox />
+            <ChatBox onMessage={(msg) => {
+                console.log(msg);
+            }} />
         </div>
     )
 }

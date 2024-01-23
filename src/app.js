@@ -5,6 +5,7 @@ const path = require('path');
 require('dotenv').config();
 
 const auth = require('./routes/auth');
+const chat = require('./routes/chat');
 
 // Consts
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', auth);
+app.use('/chat', chat);
 
 // Setup
 if (RUN_MODE !== 'dev') {
