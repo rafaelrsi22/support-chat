@@ -25,7 +25,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Register />} />
                     <Route path="/chat" element={
-                        <ProtectedRoute element={<Chat />} unauthorized={<AccessDenied />} />
+                        <ProtectedRoute element={<Chat />} unauthorized={<Home />} />
                     } />
                 </Routes>
             </BrowserRouter>

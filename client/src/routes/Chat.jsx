@@ -25,7 +25,7 @@ function Chat() {
                     const data = await response.json();
 
                     if (data) {
-                        navigate('/')
+                        navigate('/');
                     }
                 }} />
             </div>

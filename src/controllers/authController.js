@@ -73,8 +73,6 @@ module.exports.loginUser = async function(req, res) {
 }
 
 module.exports.logoutUser = async function(req, res) {
-    const token = req.token;
-
     res.clearCookie(COOKIE_NAME);
     return res.status(200).json({msg: 'User successfully logged out!'});
 }
@@ -84,7 +82,8 @@ module.exports.getUser = async function(req, res) {
 
     try {
         return res.json({data: {
-            username: user.username
+            username: user.username,
+            admin: user.admin
         }});
     } catch(error) {
         return warnController.responseInternalError(res);

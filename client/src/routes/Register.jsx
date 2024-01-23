@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 import RegisterForm from "../components/RegisterForm";
 import Header from "../components/Header";
+import HomeLink from "../components/HomeLink";
 
 import { alertActions } from "../reducers/AlertReducer";
 
@@ -37,7 +38,10 @@ function Register() {
                     }
                     navigate('/chat');
                 }
-            }} />
+            }}>
+                <HomeLink />
+            </RegisterForm>
+            
         </div>
         :
         <Navigate to='/chat' />
