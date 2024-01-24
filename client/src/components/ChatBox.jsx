@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 
 import Message from "./Message";
 
@@ -11,11 +11,13 @@ function ChatBox(props) {
 
     return (
         <div className="bg-neutral-100 shadow-2xl max-w-xl w-lvw h-full rounded-lg flex flex-col">
-            <ul className="flex flex-col grow px-5 py-5 overflow-auto">
-                {/* {props.messages.map((value) => <Message content={value.content} user />)}
-                {props.userMessages.map((value) => <Message content={value.content} />)} */}
+            <ul id="chat-overflow" className="flex flex-col grow px-5 py-5 overflow-auto">
                 {props.messages.map((value) => {
                     const ownsMessage = value.owner === props.userId;
+                    const element = document.getElementById('chat-overflow');
+
+                    setTimeout(() => element.scrollTo({top: element.scrollHeight, behavior: 'smooth' }), 100);
+
                     return <Message content={value.content} user={ownsMessage} />
                 })}
             </ul>

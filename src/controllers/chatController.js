@@ -1,5 +1,4 @@
 const Message = require('../models/Message');
-const Channel = require('../models/Channel');
 const User = require('../models/User');
 
 function isStringEmpty(value) {
@@ -20,6 +19,13 @@ module.exports.createMessage = function(req, res) {
         username: user.username,
         content: messageContent,
         admin: user.admin
+    });
+
+    const io = req.app.get('socketio');
+    io.emit('message', {
+        owner: user._id,
+        content: messageContent,
+        creation: message.creation
     });
 
     message.save();

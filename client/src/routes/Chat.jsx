@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import  { useNavigate } from 'react-router-dom'
+import io from 'socket.io-client';
 
 import Header from "../components/Header";
 import ChatBox from "../components/ChatBox";
 import AdminSearch from "../components/AdminSearch";
 
+const socket = io('http://localhost:3000');
+
 function Chat() {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
     const [isAdmin, setAdminState] = useState(false);
-    const [userMessages, setUserMessages] = useState([]);
-    const [chatMessages, setChatMessages] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [sortedMessages, setSortedMessages] = useState([]);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const addMessage = (data) => setMessages(messages => [...messages, data]);
+        socket.on('message', addMessage);
+        return () => socket.off('message', addMessage);
+    }, []);
 
     useEffect(() => { // Set user states
         fetch('/auth')
@@ -30,15 +38,15 @@ function Chat() {
                 fetch('/chat') // Load messages
                     .then((response) => response.json())
                     .then(({data}) => {
-                        setMessages(data);
+                        // setMessages(data);
+                        setMessages([...messages, ...data]);
                     });
             });
     }, []);
 
     useEffect(() => {
-        const messagesUnion = userMessages.concat(messages);
-        setChatMessages(messagesUnion.sort((messageA, messageB) => messageA.creation - messageB.creation)) // sorting by creation date
-    }, [userMessages, messages]);
+        setSortedMessages(messages.sort((messageA, messageB) => messageA.creation - messageB.creation)) // sorting by creation date
+    }, [messages]);
 
     return (
         <div id="app" className="flex flex-col max-h-screen">
@@ -59,11 +67,11 @@ function Chat() {
             </Header>
             <div className="flex justify-around min-h-0 grow mb-10">
                 {isAdmin ? 
-                <AdminSearch onMessagesLoad={(messages) => {
-                    setUserMessages(messages);
+                <AdminSearch onMessagesLoad={(loadedMessages) => {
+                    setMessages([...messages, ...loadedMessages]);
                 }} /> 
                 : <></>}
-                <ChatBox messages={chatMessages} userId={userId} />
+                <ChatBox messages={sortedMessages} userId={userId} />
             </div>
         </div>
     )
