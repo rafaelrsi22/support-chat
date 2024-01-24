@@ -68,7 +68,7 @@ function Chat() {
             <div className="flex justify-around min-h-0 grow mb-10">
                 {isAdmin ? 
                 <AdminSearch onMessagesLoad={(loadedMessages) => {
-                    setMessages([...messages, ...loadedMessages]);
+                    setMessages([...loadedMessages]);
                 }} /> 
                 : <></>}
                 <ChatBox messages={sortedMessages} userId={userId} />
