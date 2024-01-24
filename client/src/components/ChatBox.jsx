@@ -17,6 +17,7 @@ function ChatBox(props) {
                     const element = document.getElementById('chat-overflow');
 
                     setTimeout(() => element.scrollTo({top: element.scrollHeight, behavior: 'smooth' }), 100);
+                    element.scrollTo({top: element.scrollHeight, behavior: 'smooth' })
 
                     return <Message content={value.content} user={ownsMessage} />
                 })}
