@@ -10,6 +10,7 @@ function Header(props) {
             <a className="text-6xl font-semibold tracking-wide text-slate-800 text-center mt-10 block">
                 <Link to={props.redirect || '/'}>{props.msg || 'Support Chat'}</Link>
             </a>
+            {props.children}
         </header>
     );
 }

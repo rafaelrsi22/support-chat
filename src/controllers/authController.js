@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const User = require('../models/User');
+const Channel = require('../models/Channel');
 
 const warnController = require('./warnController');
 const userSchema = require('../schemas/userSchema');
@@ -39,7 +41,15 @@ module.exports.registerUser = async function(req, res) {
     }
 
     try {
-        const newUser = new User({username, email, password: hashedPassword});
+        const userChannel = new Channel();
+        const newUser = new User({
+            username,
+            email, 
+            password: hashedPassword,
+            channel: userChannel._id
+        });
+        
+        userChannel.save();
         newUser.save();
 
         const userToken = createUserToken(newUser._id);
@@ -82,12 +92,35 @@ module.exports.getUser = async function(req, res) {
 
     try {
         return res.json({data: {
+            id: user.id,
             username: user.username,
             admin: user.admin
         }});
     } catch(error) {
         return warnController.responseInternalError(res);
     }
+}
+
+module.exports.getUsersByName = async function(req, res) {
+    const searchValue = req.params.username.replace(/\s/g, '');
+
+    if (searchValue.length == 1) { // Not valid username
+        return;
+    }
+
+    const dbUsers = await User.find({username: {$regex: searchValue, $options: 'i'}});
+    const filteredDbUsers = dbUsers.filter((value) => {
+        return (value.id !== req.user.id) || !value.admin;
+    });
+
+    const query = filteredDbUsers.map((value) => {
+        return {
+            id: value.id,
+            username: value.username
+        }
+    });
+
+    res.json({data: query});
 }
 
 module.exports.privateRoute = async function(req, res, next) {
