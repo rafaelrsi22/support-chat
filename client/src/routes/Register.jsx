@@ -7,7 +7,12 @@ import RegisterForm from "../components/RegisterForm";
 import Header from "../components/Header";
 import HomeLink from "../components/HomeLink";
 
-import { alertActions } from "../reducers/AlertReducer";
+import { handleJSONError } from "../controllers/alertController";
+import { postJSONRequestHandler } from "../controllers/fetchController";
+
+function registerUser(formValue, callback) {
+    postJSONRequestHandler('/auth/register', formValue, callback);
+}
 
 function Register() {
     const [cookies] = useCookies(['authorization-key']);
@@ -19,25 +24,12 @@ function Register() {
         <div id="app" className="flex flex-col">
             <Header />
             <RegisterForm onSubmit={async (value) => {
-                const response = await fetch('/auth/register', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(value)
-                });
-
-                const json = await response.json();
-
-                if (json) {
-                    const data = json.data;
-
-                    if (data && json.type === 'error') {
-                        dispatch(alertActions.createAlert(data.title, data.description));
-                        return;
+                registerUser(value, (json) => {
+                    const dispatchAction = handleJSONError(json, () => navigate('/chat'));
+                    if (dispatchAction) {
+                        dispatch(dispatchAction);
                     }
-                    navigate('/chat');
-                }
+                })
             }}>
                 <HomeLink />
             </RegisterForm>

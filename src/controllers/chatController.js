@@ -5,6 +5,15 @@ function isStringEmpty(value) {
     return value.replace(' ', '') === '';
 }
 
+function messageResponseInterface(dbMessage) {
+    return {
+        owner: dbMessage.owner,
+        content: dbMessage.content,
+        creation: dbMessage.creation,
+        adminMessage: dbMessage.admin
+    }
+}
+
 module.exports.createMessage = function(req, res) {
     const { user } = req;
     const messageContent = req.body.message;
@@ -25,7 +34,8 @@ module.exports.createMessage = function(req, res) {
     io.emit('message', {
         owner: user._id,
         content: messageContent,
-        creation: message.creation
+        creation: message.creation,
+        adminMessage: message.admin
     });
 
     message.save();
@@ -35,16 +45,7 @@ module.exports.getMessages = async function(req, res) {
     const { user } = req;
 
     const dbMessages = await Message.find({channel: user.channel});
-    const responseMessages = [];
-
-    dbMessages.forEach((value) => {
-        console.log(value)
-        responseMessages.push({
-            owner: value.owner,
-            content: value.content,
-            creation: value.creation
-        });
-    });
+    const responseMessages = dbMessages.map((dbMessage) => messageResponseInterface(dbMessage));
 
     return res.json({data: responseMessages});
 }
@@ -59,15 +60,7 @@ module.exports.getUserMessages = async function(req, res) {
     const userTarget = await User.findById(req.params.userId);
     const messages = await Message.find({channel: userTarget.channel});
 
-    const messagesQuery = messages.map((value) => {
-        return {
-            owner: value.owner,
-            content: value.content,
-            creation: value.creation
-        }
-    });
-
-    console.log(await User.findOneAndUpdate({_id: user._id}, {channel: userTarget.channel}));
+    const messagesQuery = messages.map((dbMessage) => messageResponseInterface(dbMessage));
 
     return res.json({data: messagesQuery});
 }

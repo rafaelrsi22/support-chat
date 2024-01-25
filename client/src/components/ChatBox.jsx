@@ -6,6 +6,24 @@ function isStringEmpty(value) {
     return value.replace(' ', '') === '';
 }
 
+function scrollOverflowToBottom(overflowElement) {
+    setTimeout(() => overflowElement.scrollTo({top: overflowElement.scrollHeight, behavior: 'smooth' }), 100);
+}
+
+function uploadMessage(content) {
+    if (isStringEmpty(content)) {
+        return;
+    }
+
+    fetch('/chat', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: content })
+    });
+}
+
 function ChatBox(props) {
     const [message, setMessage] = useState('');
 
@@ -16,26 +34,14 @@ function ChatBox(props) {
                     const ownsMessage = value.owner === props.userId;
                     const element = document.getElementById('chat-overflow');
 
-                    setTimeout(() => element.scrollTo({top: element.scrollHeight, behavior: 'smooth' }), 100);
-                    element.scrollTo({top: element.scrollHeight, behavior: 'smooth' })
-
-                    return <Message content={value.content} user={ownsMessage} />
+                    scrollOverflowToBottom(element);
+                    
+                    return <Message content={value.content} user={ownsMessage || (props.isAdmin && value.adminMessage)} />
                 })}
             </ul>
-            <form className="justify-self-end" onSubmit={(e) => {
+            <form className="justify-self-end" onSubmit={(e) => { // Message created
                 e.preventDefault();
-
-                if (isStringEmpty(message)) {
-                    return;
-                }
-
-                fetch('/chat', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message })
-                });
+                uploadMessage(message);
                 setMessage('');
             }}>
                 <div className="flex items-center px-3 py-2 rounded-lg bg-gray-50">

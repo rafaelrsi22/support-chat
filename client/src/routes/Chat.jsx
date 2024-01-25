@@ -8,6 +8,30 @@ import AdminSearch from "../components/AdminSearch";
 
 const socket = io('http://localhost:3000');
 
+function recieveUserData(callback) {
+    fetch('/auth')
+    .then((response) => response.json())
+    .then(({data}) => callback(data));
+}
+
+function recieveMessageData(callback) {
+    fetch('/chat') 
+    .then((response) => response.json())
+    .then(({data}) => callback(data));
+}
+
+function sortMessageByCreation(messages) {
+    return messages.sort((messageA, messageB) => messageA.creation - messageB.creation);
+}
+
+async function logoutUser() {
+    const response = await fetch('/auth/logout', {
+        method: "POST"
+    });
+
+    return await response.json();
+}
+
 function Chat() {
     const [username, setUsername] = useState('');
     const [userId, setUserId] = useState('');
@@ -23,29 +47,22 @@ function Chat() {
         return () => socket.off('message', addMessage);
     }, []);
 
-    useEffect(() => { // Set user states
-        fetch('/auth')
-            .then((response) => response.json())
-            .then(({data}) => {
-                setAdminState(data.admin);
-                setUsername(data.username);
-                setUserId(data.id);
+    useEffect(() => {
+        recieveUserData((data) => {
+            setAdminState(data.admin);
+            setUsername(data.username);
+            setUserId(data.id);
 
-                if (data.admin) {
-                    return;
-                }
-                
-                fetch('/chat') // Load messages
-                    .then((response) => response.json())
-                    .then(({data}) => {
-                        // setMessages(data);
-                        setMessages([...messages, ...data]);
-                    });
-            });
+            if (data.admin) { // Do not load all admin messages on the empty chat
+                return;
+            }
+
+            recieveMessageData((data) => setMessages([...messages, ...data]));
+        });
     }, []);
 
     useEffect(() => {
-        setSortedMessages(messages.sort((messageA, messageB) => messageA.creation - messageB.creation)) // sorting by creation date
+        setSortedMessages(sortMessageByCreation(messages)) // sorting by creation date
     }, [messages]);
 
     return (
@@ -53,13 +70,7 @@ function Chat() {
             <Header msg={`Hello ${username}`} redirect='/chat'>
                 <div className="flex flex-col mx-auto items-center max-w-32 mt-10 mb-20">
                     <input type="submit" className="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 cursor-pointer" value='Logout' onClick={async () => {
-                        const response = await fetch('/auth/logout', {
-                            method: "POST"
-                        });
-
-                        const data = await response.json();
-
-                        if (data) {
+                        if (await logoutUser()) { // Returns a success data
                             navigate('/');
                         }
                     }} />
@@ -71,7 +82,7 @@ function Chat() {
                     setMessages([...loadedMessages]);
                 }} /> 
                 : <></>}
-                <ChatBox messages={sortedMessages} userId={userId} />
+                <ChatBox messages={sortedMessages} userId={userId} isAdmin={isAdmin} />
             </div>
         </div>
     )

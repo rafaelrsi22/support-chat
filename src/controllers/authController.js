@@ -101,6 +101,17 @@ module.exports.getUser = async function(req, res) {
     }
 }
 
+module.exports.getAdmins = async function(req, res) {
+    const admins = User.find({admin: true});
+    const queryResponse = admins.map((value) => {
+        return {
+            id: value.id
+        }
+    });
+
+    return res.json({data: queryResponse});
+}
+
 module.exports.getUsersByName = async function(req, res) {
     const searchValue = req.params.username.replace(/\s/g, '');
 

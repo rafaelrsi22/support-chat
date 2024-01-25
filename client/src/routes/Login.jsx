@@ -7,7 +7,12 @@ import LoginForm from "../components/LoginForm";
 import Header from "../components/Header";
 import HomeLink from "../components/HomeLink";
 
-import { alertActions } from "../reducers/AlertReducer";
+import { handleJSONError } from "../controllers/alertController";
+import { postJSONRequestHandler } from "../controllers/fetchController";
+
+function loginUser(formValue, callback) {
+    postJSONRequestHandler('/auth/login', formValue, callback)
+}
 
 function Login() {
     const [cookies] = useCookies(['authorization-key']);
@@ -19,25 +24,12 @@ function Login() {
         <div id="app" className="flex flex-col">
             <Header />
             <LoginForm onSubmit={async (value) => {
-                const response = await fetch('/auth/login', {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(value)
-                });
-
-                const json = await response.json();
-
-                if (json) {
-                    const data = json.data;
-
-                    if (data && json.type === 'error') {
-                        dispatch(alertActions.createAlert(data.title, data.description));
-                        return;
+                loginUser(value, (json) => {
+                    const dispatchAction = handleJSONError(json, () => navigate('/chat'));
+                    if (dispatchAction) {
+                        dispatch(dispatchAction);
                     }
-                    navigate('/chat');
-                }
+                });
             }}>
                 <HomeLink />
             </LoginForm>
