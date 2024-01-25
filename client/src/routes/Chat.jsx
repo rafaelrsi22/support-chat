@@ -66,17 +66,16 @@ function Chat() {
     }, [messages]);
 
     return (
-        <div id="app" className="flex flex-col max-h-screen">
-            <Header msg={`Hello ${username}`} redirect='/chat'>
-                <div className="flex flex-col mx-auto items-center max-w-32 mt-10 mb-20">
-                    <input type="submit" className="text-white bg-blue-950 hover:text-blue-950 border hover:border-blue-950 hover:bg-white focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 cursor-pointer" value='Logout' onClick={async () => {
-                        if (await logoutUser()) { // Returns a success data
-                            navigate('/');
-                        }
-                    }} />
-                </div>
-            </Header>
-            <div className="flex justify-around min-h-0 grow mb-10">
+        <div id="app" className="flex flex-col items-center justify-center max-h-screen">
+            <div className="montserrat">
+                <h2>Welcome, <span className="blue-gradient font-bold">{username}</span></h2>
+            </div>
+            <a className="text-lg leading-none text-neutral-600 font-semibold focus:outline-none font-medium rounded-lg text-sm px-5 py-3.5 text-center cursor-pointer underline-hover montserrat" onClick={async () => {
+                if (await logoutUser()) { // Returns a success data
+                    navigate('/');
+                }
+            }} >Logout</a>
+            <div className="flex justify-around min-h-0 max-h-96 grow mb-10 mt-12">
                 {isAdmin ? 
                 <AdminSearch onMessagesLoad={(loadedMessages) => {
                     setMessages([...loadedMessages]);

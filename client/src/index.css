@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
 * {
   margin: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -11,6 +14,105 @@ body {
   font-size: 3rem;
 }
 
+input {
+  outline: none !important;
+}
+
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.blue-gradient {
+  background: linear-gradient(0deg, rgba(5,89,193,1) 0%, rgba(201,225,255,1) 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  animation: gradientSpinner 1s ease infinite;
+}
+
+.background-transition {
+  transition-property: background-color color border;
+  transition: 400ms ease-out;
+}
+
+.padding-transition {
+  transition-property: padding;
+  transition: 200ms ease-out;
+}
+
+.underline-hover {
+  position: relative;
+}
+
+.underline-hover::after {
+  content: '';
+  position: absolute;
+  width: 50%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 5px;
+  left: 25%;
+  background-color: #000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.underline-hover:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
 #root, #app {
   height: 100%;
+}
+
+.wave {
+  position: fixed;
+  width: 200%;
+  height: 3.5em;
+  animation: wave 15s infinite;
+  transform: translate3d(0, 0, 0);
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.wave:nth-of-type(2) {
+  bottom: -1.25em;
+  animation: wave 40s reverse infinite;
+  opacity: 0.8;
+}
+
+.wave:nth-of-type(3) {
+  bottom: -2.5em;
+  animation: wave 20s reverse infinite;
+  opacity: 0.9;
+}
+
+@keyframes wave {
+  2% {
+      transform: translateX(1);
+  }
+
+  25% {
+      transform: translateX(-25%);
+  }
+
+  50% {
+      transform: translateX(-50%);
+  }
+
+  75% {
+      transform: translateX(-25%);
+  }
+
+  100% {
+      transform: translateX(1);
+  }
+}
+
+@keyframes gradientSpinner {
+  0% {background-position: 37% 0%;}
+  50% {background-position: 74% 100%;}
+  100% {background-position: 37% 0%;}
 }

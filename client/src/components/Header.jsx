@@ -5,10 +5,10 @@ import AlertManager from "../managers/AlertManager";
 
 function Header(props) {
     return (
-        <header>
+        <header className="absolute w-full top-0">
             <AlertManager />
-            <a className="text-6xl font-semibold tracking-wide text-slate-800 text-center mt-10 block">
-                <Link to={props.redirect || '/'}>{props.msg || 'Support Chat'}</Link>
+            <a className="ms-4 text-4xl font-bold tracking-wider italic">
+                <Link to={props.redirect || '/'}>SC</Link>
             </a>
             {props.children}
         </header>

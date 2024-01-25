@@ -3,19 +3,19 @@ const DataInfo = {
         placeholder: 'johndoe@email.com',
         input: 'text',
         name: 'email',
-        label: 'Email',
+        label: 'email',
     },
     username: {
         placeholder: 'John Doe',
         input: 'text',
         name: 'username',
-        label: 'Username'
+        label: 'username'
     },
     password: {
         placeholder: 'Write your darkest secret',
         input: 'password',
         name: 'password',
-        label: 'Password'
+        label: 'password'
     }
 }
 
